@@ -1,0 +1,23 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\Web3\SetCompany:
+        arguments:
+            $host: '%env(INFURA_HOST)%'
+            $apiKey: '%env(INFURA_API_KEY)%'
+            $abi: '%env(json:file:resolve:SETCOMPANY_ABI_FILENAME)%'
+            $contractAddress: '%env(SETCOMPANY_CONTRACT_ADDRESS)%'
+            $privateKey: '%env(SETCOMPANY_PRIVATE_KEY)%'
+            $fromAddress: '%env(SETCOMPANY_FROM_ADDRESS)%'
+            $chainId: '%env(SETCOMPANY_CHAIN_ID)%'
