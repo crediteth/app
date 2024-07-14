@@ -34,6 +34,7 @@ RUN set -eux; \
         @composer \
         apcu \
         gmp \
+        intl \
         ctype \
         iconv \
         intl \

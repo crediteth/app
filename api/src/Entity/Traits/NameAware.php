@@ -12,5 +12,6 @@ trait NameAware
 {
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     public string $name;
 }
