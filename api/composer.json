@@ -1,9 +1,10 @@
 {
     "type": "project",
-    "license": "MIT",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
+        "ext-gmp": "*",
         "ext-iconv": "*",
         "api-platform/core": "^3.2",
         "doctrine/doctrine-bundle": "^2.7",
@@ -27,7 +28,9 @@
         "symfony/serializer": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
         "symfony/validator": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/yaml": "6.4.*",
+        "web3p/ethereum-tx": "dev-master",
+        "web3p/web3.php": "dev-master"
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.0",
