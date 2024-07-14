@@ -19,13 +19,11 @@ class Company
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\NotBlank]
-    #[Assert\Country]
     #[Assert\Length(min: 10, max: 255)]
     public string $registrationNumber;
 
     #[ORM\Column(type: Types::STRING, length: 1024)]
     #[Assert\NotBlank]
-    #[Assert\Country]
     #[Assert\Length(min: 5, max: 1024)]
     public string $address;
 

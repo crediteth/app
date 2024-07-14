@@ -16,7 +16,8 @@ services:
         arguments:
             $host: '%env(INFURA_HOST)%'
             $apiKey: '%env(INFURA_API_KEY)%'
-            $abi: '%env(json:file:SETCOMPANY_ABI_FILENAME)%'
+            $abi: '%env(json:file:resolve:SETCOMPANY_ABI_FILENAME)%'
             $contractAddress: '%env(SETCOMPANY_CONTRACT_ADDRESS)%'
             $privateKey: '%env(SETCOMPANY_PRIVATE_KEY)%'
             $fromAddress: '%env(SETCOMPANY_FROM_ADDRESS)%'
+            $chainId: '%env(SETCOMPANY_CHAIN_ID)%'
