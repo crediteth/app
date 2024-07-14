@@ -9,8 +9,8 @@ use Exception;
 use Web3\Contract;
 use Web3\Eth;
 use Web3\Web3;
+use Web3\Utils;
 use Web3p\EthereumTx\Transaction;
-use phpseclib\Math\BigInteger;
 
 final readonly class SetCompany
 {
@@ -38,13 +38,14 @@ final readonly class SetCompany
     public function sendTransaction(Company $company): void
     {
         $smartContractData = '0x' . $this->callSmartContract($company);
+        $estimateGas = $this->estimateGas($smartContractData);
 
         $transaction = new Transaction([
             'nonce' => $this->getTransactionCount(),
             'from' => $this->fromAddress,
             'to' => $this->contractAddress,
             'data' => $smartContractData,
-            'gas' => $this->estimateGas($smartContractData),
+            'gas' => $estimateGas,
             'gasPrice' => $this->getGasPrice(),
             'chainId' => $this->chainId,
             'value' => '0x0',
@@ -53,15 +54,15 @@ final readonly class SetCompany
         $this->sendRawTransaction($transaction);
     }
 
-    private static function toHex(string|int|BigInteger $value): string
+    private static function toBytes32(string $input): string
     {
-        if ($value instanceof BigInteger) {
-            $value = $value->toHex();
-        } elseif ($value) {
-            $value = dechex((int) $value);
+        if (is_numeric($input)) {
+            $hex = dechex((int) $input);
+        } else {
+            $hex = bin2hex($input);
         }
 
-        return '0x' . $value;
+        return substr(str_pad($hex, 64, '0', STR_PAD_LEFT), 0, 64);
     }
 
     private function getTransactionCount(): string
@@ -72,7 +73,7 @@ final readonly class SetCompany
             $txNonce = $result;
         });
 
-        return self::toHex($txNonce);
+        return Utils::toHex($txNonce);
     }
 
     private function callSmartContract(Company $company): string
@@ -81,6 +82,7 @@ final readonly class SetCompany
             self::SMART_CONTRACT_NAME,
             $company->user->ethWalletAddress,
             ($company->name . $company->countryCode),
+            // self::toBytes32($company->name) // TODO $company->signature
         );
     }
 
@@ -100,7 +102,7 @@ final readonly class SetCompany
             },
         );
 
-        return self::toHex($estimatedGas);
+        return Utils::toHex($estimatedGas);
     }
 
     /** @see \Web3\Methods\Eth\GasPrice */
@@ -116,7 +118,7 @@ final readonly class SetCompany
             }
         );
 
-        return self::toHex($gasPrice);
+        return Utils::toHex($gasPrice);
     }
 
     /** @see \Web3\Methods\Eth\SendRawTransaction */
